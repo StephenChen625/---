@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>盲盒模拟抽取</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px; /* 增大基础字体大小 */
+        }
+
+        button {
+            padding: 15px 25px; /* 按钮大小调整 */
+            font-size: 20px; /* 按钮字体大小 */
+            background-color: #040200;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #341400;
+        }
+
+        #resultDisplay {
+            margin-top: 20px;
+            height: 50px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #070000;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>宝可梦盲盒抽取模拟</h1>
+    <button id="drawButton">抽盲盒</button>
+    <div id="resultDisplay">点击按钮开始抽取盲盒</div>
+    <table>
+        <tr>
+            <th>妙蛙种子</th>
+            <th>杰尼龟</th>
+            <th>小火龙</th>
+            <th>胖丁</th>
+            <th>可达鸭</th>
+            <th>皮卡丘</th>
+        </tr>
+        <tr>
+            <td id="妙蛙种子">0</td>
+            <td id="杰尼龟">0</td>
+            <td id="小火龙">0</td>
+            <td id="胖丁">0</td>
+            <td id="可达鸭">0</td>
+            <td id="皮卡丘">0</td>
+        </tr>
+    </table>
+    <p>总抽取次数：<span id="totalDraws">0</span></p>
+    <p>已抽中类型数：<span id="typesCollected">0</span> / 6</p>
+
+    <script>
+        const pokemons = ['妙蛙种子', '杰尼龟', '小火龙', '胖丁', '可达鸭', '皮卡丘'];
+        let totalDraws = 0;
+        let collectedTypes = new Set();
+
+        document.getElementById('drawButton').addEventListener('click', function() {
+            document.getElementById('resultDisplay').textContent = "正在抽取...";
+            const randomEffect = setInterval(() => {
+                const randomIndex = Math.floor(Math.random() * pokemons.length);
+                document.getElementById('resultDisplay').textContent = '你可能会抽到：' + pokemons[randomIndex];
+            }, 10); // 更快的随机滚动
+
+            setTimeout(function() {
+                clearInterval(randomEffect);
+
+                const index = Math.floor(Math.random() * pokemons.length);
+                const result = pokemons[index];
+                document.getElementById('resultDisplay').textContent = '你抽到了：' + result;
+
+                const countCell = document.getElementById(result);
+                countCell.textContent = parseInt(countCell.textContent) + 1;
+                if (parseInt(countCell.textContent) === 1) {
+                    collectedTypes.add(result);
+                }
+
+                totalDraws++;
+                document.getElementById('totalDraws').textContent = totalDraws;
+                document.getElementById('typesCollected').textContent = collectedTypes.size;
+            }, 500); // 2 seconds delay
+        });
+    </script>
+</body>
+</html>
